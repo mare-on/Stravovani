@@ -11,7 +11,7 @@
                 <tr>
                     <td>
                         <label>Zpráva:</label>
-                        <input type="text" name="msg">
+                        <input type="text" name="isic">
                         <input type="submit" name="send" value="Odeslat">
                     </td>
                 </tr>
@@ -22,7 +22,7 @@
 
                     // Akce po zmáčknutí tlačítka
                     if (isset($_POST['send'])) {
-                        $msg = $_POST['msg'];
+                        $msg = $_POST['isic'];
 
                         // Vytvoření nového připojení k serveru
                         if ($server = socket_create(AF_INET, SOCK_STREAM, 0)) {
@@ -35,8 +35,9 @@
                                     die("Žádná odchozí data!\n");
                                 }
 
-                                $reply = ":> Odpověď serveru: ";
-                                $reply .= trim(socket_read($server, 024));
+                                $msg = ":> Dotaz: " . $msg;
+                                $reply .= ":> Odpověď: ";
+                                $reply .= trim(socket_read($server, 1024));
 
                             } else {
                                 die("Připojení k serveru selhalo!\n");
@@ -46,6 +47,11 @@
                         }
                     }
                 ?>
+                <tr>
+                    <td>
+                        <?= $msg ?>
+                    </td>
+                </tr>
                 <tr>
                     <td>
                         <?= $reply ?>

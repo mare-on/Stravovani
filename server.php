@@ -11,18 +11,18 @@ $port = "20202";
 
 // Vytvoření nového koncového serveru
 if ($server = socket_create(AF_INET, SOCK_STREAM, 0)) {
-    echo "=============================================\n";
-    echo "  Vytvoření koncového bodu proběhlo úspěšně\n\n";
+    echo "==============================================\n";
+    echo "  Spuštění webového serveru proběhlo úspěšně\n\n";
 
     // Kontrola naslouchacího portu serveru
     if (socket_bind($server, $host, $port)) {
         echo "  - Naslouchání na portu " . $port . " je aktivní -\n";
 
-        // Kontrola naslouchání nových připojení k serveru s maximální frontou 3 klientů
-        if (socket_listen($server, 3)) {
-            echo " - Naslouchání nových připojení je aktivní -\n";
+        // Kontrola naslouchání nových připojení k serveru s maximální frontou 5 klientů
+        if (socket_listen($server, 5)) {
+            echo "  - Naslouchání nových klientů je aktivní -\n";
             echo "=============================================\n";
-            echo "Čekání na klienta...";
+            echo "Čekání na spojení...";
 
             // Aktivace čekání na příchozí klienty a data
             do {
@@ -34,10 +34,10 @@ if ($server = socket_create(AF_INET, SOCK_STREAM, 0)) {
                     if ($data = trim(socket_read($client, 1024))) {
 
                         // Výpis zprávy od klienta
-                        echo "\n\n:> Zpráva od klienta: " . $data . "\n";
+                        echo "\n\n:> Dotaz: " . $data . "\n";
 
                         // Přípŕava odpovědi serveru
-                        echo ":> Odpověď serveru: ";
+                        echo ":> Odpověď: ";
                         $reply = readline();
 
                         // Odeslání odpovědi serveru klientovi
@@ -58,7 +58,7 @@ if ($server = socket_create(AF_INET, SOCK_STREAM, 0)) {
             } while (true);
 
             // Uzavření spojení mezi klientem a serverem
-            socket_close($client, $server);
+           socket_close($client, $server);
         } else {
             die("Naslouchání nových připojení selhalo!\n");
         }
